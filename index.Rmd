@@ -3,24 +3,31 @@ title: "index"
 output: html_document
 ---
 ```{r}
+# Load the ggplot2 library
 library(ggplot2)
-# Example dataset
+
+# Example dataset with adjusted error values for farther error lines
 data <- data.frame(
   x = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
-  y = c(2, 4, 5, 7, 10, 12, 13, 15, 18, 20)
+  y = c(2, 4, 5, 7, 10, 12, 13, 15, 18, 20),
+  ymin = c(0.5, 2.5, 3.5, 5.5, 8.5, 10.5, 11.5, 13.5, 16.5, 18.5),  # Adjusted lower bounds
+  ymax = c(3.5, 5.5, 6.5, 8.5, 11.5, 13.5, 14.5, 16.5, 19.5, 21.5)  # Adjusted upper bounds
 )
 
 # Create the ggplot
 plot <- ggplot(data, aes(x = x, y = y)) +
-  geom_point(color = "blue", size = 3) +           # Add scatterplot points
-  geom_smooth(method = "lm", color = "red") +      # Add linear regression line
+  geom_point(color = "green", size = 3) +         # Add green dots for the points
+  geom_errorbar(aes(ymin = ymin, ymax = ymax),    # Add red error lines
+                color = "red", width = 0.2) +
+  geom_smooth(method = "lm", color = "blue") +    # Optional: Add regression line in blue
   labs(
-    title = "Linear Regression in ggplot2",
+    title = "Scatterplot with Farther Error Lines and Linear Regression",
     x = "X-axis label",
     y = "Y-axis label"
   ) +
-  theme_minimal()                                  # Set the theme
+  theme_minimal()                                 # Set the theme
 
 # Print the plot
 print(plot)
+
 ```
