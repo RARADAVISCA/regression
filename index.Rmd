@@ -1,33 +1,171 @@
 ---
-title: "index"
-output: html_document
+title: "Analisis Konsumsi Minyak Pemanas Rumah"
+date: "`r Sys.Date()`"
+author: Rara Dwi Davisca - Rekayasa Perangkat Lunak - Institut Teknologi Statistika dan Bisnis Muhammadiyah
+output:
+  rmdformats::robobook:
+    self_contained: true
+    thumbnails: true
+    lightbox: true
+    gallery: false
+    highlight: tango
+bibliography: references.bib
 ---
+
+```{=html}
+<style>
+body{
+text-align: justify}
+</style>
+```
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# A. Analisis Konsumsi Heating Oil
+## 1. Membuat Correlation Matrix
 ```{r}
-# Load the ggplot2 library
-library(ggplot2)
+# Load library
+library(tidyverse)
+library(corrplot)
 
-# Example dataset with adjusted error values for farther error lines
-data <- data.frame(
-  x = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
-  y = c(2, 4, 5, 7, 10, 12, 13, 15, 18, 20),
-  ymin = c(0.5, 2.5, 3.5, 5.5, 8.5, 10.5, 11.5, 13.5, 16.5, 18.5),  # Adjusted lower bounds
-  ymax = c(3.5, 5.5, 6.5, 8.5, 11.5, 13.5, 14.5, 16.5, 19.5, 21.5)  # Adjusted upper bounds
-)
+# Baca data
+data <- read.csv("HeatingOil.csv")
 
-# Create the ggplot
-plot <- ggplot(data, aes(x = x, y = y)) +
-  geom_point(color = "green", size = 3) +         # Add green dots for the points
-  geom_errorbar(aes(ymin = ymin, ymax = ymax),    # Add red error lines
-                color = "red", width = 0.2) +
-  geom_smooth(method = "lm", color = "blue") +    # Optional: Add regression line in blue
-  labs(
-    title = "Scatterplot with Farther Error Lines and Linear Regression",
-    x = "X-axis label",
-    y = "Y-axis label"
-  ) +
-  theme_minimal()                                 # Set the theme
+# Pilih variabel yang relevan
+selected_data <- data %>%
+  select(Heating_Oil, Insulation, Temperature, Num_Occupants, Avg_Age, Home_Size)
 
-# Print the plot
-print(plot)
+# Hitung korelasi
+cor_matrix <- cor(selected_data)
+
+# Tampilkan sebagai tabel
+print(cor_matrix)
+
+# Visualisasi korelasi
+corrplot(cor_matrix, method = "color", type = "upper", tl.col = "black", tl.srt = 45)
 
 ```
+
+## 2. Interpretasi Correlation Matrix
+Dari hasil di atas, kita bisa mengamati beberapa hal:
+
+- Variabel dengan korelasi positif kuat terhadap Heating_Oil: (misalnya) Home_Size dan Num_Occupants.
+
+- Variabel dengan korelasi negatif kuat terhadap Heating_Oil: (misalnya) Temperature dan Insulation.
+
+Interpretasi:
+
+- Rumah yang lebih besar dan berpenghuni lebih banyak cenderung mengonsumsi lebih banyak minyak pemanas.
+
+- Semakin tinggi suhu dan kualitas insulasi, kebutuhan heating oil cenderung menurun.
+
+## 3. Scatter Plot Heating_Oil vs Avg_Age
+```{r}
+ggplot(data, aes(x = Heating_Oil, y = Avg_Age, color = Heating_Oil)) +
+  geom_point(size = 3) +
+  scale_color_gradient(low = "blue", high = "red") +
+  labs(title = "Heating Oil vs Usia Rata-Rata Penghuni",
+       x = "Jumlah Heating Oil",
+       y = "Usia Rata-Rata Penghuni")
+
+```
+Plot menunjukkan apakah rumah dengan penghuni lebih tua cenderung menggunakan lebih banyak atau lebih sedikit minyak pemanas. Misalnya, jika ada pola naik, maka usia berpengaruh positif terhadap konsumsi.
+
+## 4. Scatter Plot Temperature vs Insulation
+```{r}
+ggplot(data, aes(x = Temperature, y = Insulation, color = Heating_Oil)) +
+  geom_point(size = 3) +
+  scale_color_gradient(low = "green", high = "red") +
+  labs(title = "Suhu vs Kualitas Insulasi",
+       x = "Suhu Lingkungan (°F)",
+       y = "Skor Insulasi Rumah")
+
+```
+Interpretasi:
+Scatter plot ini membantu melihat apakah rumah dengan suhu rendah dan insulasi buruk mengonsumsi lebih banyak minyak pemanas.
+
+## 5. Rekomendasi untuk Sarah
+Berdasarkan hasil analisis:
+
+- Targetkan pemasaran ke rumah berukuran besar dan berpenghuni banyak.
+
+- Promosi spesial untuk wilayah bersuhu dingin dengan insulasi rendah.
+
+- Edukasi pelanggan tua atau yang tinggal sendiri agar lebih hemat energi.
+
+Dengan strategi ini, Sarah dapat mengalokasikan anggaran pemasaran secara lebih efisien dan efektif.
+
+# B. Model Prediksi Heating Oil (Sarah)
+## 1. Membaca Dataset HeatingOil.csv
+```{r}
+# Membaca data
+data <- read.csv("HeatingOil.csv")
+head(data)
+
+```
+## 2. Membuat Model Regresi
+```{r}
+# Membuat model regresi linear
+model <- lm(Heating_Oil ~ Insulation + Temperature + Num_Occupants + Avg_Age + Home_Size, data = data)
+summary(model)
+
+```
+## 3. Menyimpan Model
+```{r}
+# Menyimpan model sebagai file RDS
+saveRDS(model, "model_heating_oil.rds")
+
+```
+
+# C. Prediksi Calon Pelanggan Heating Oil (Marketer)
+## 1.  Membaca Model dari Sarah
+```{r}
+# Membaca model yang sudah dibuat dan disimpan oleh Sarah
+model <- readRDS("model_heating_oil.rds")
+
+```
+## 2. Membaca Data Calon Pelanggan
+```{r}
+# Membaca dataset calon pelanggan
+marketing_data <- read.csv("HeatingOil-Marketing.csv")
+head(marketing_data)
+
+```
+## 3. Memprediksi Kebutuhan Minyak
+```{r}
+# Prediksi konsumsi minyak menggunakan model
+marketing_data$Predicted_Heating_Oil <- predict(model, newdata = marketing_data)
+head(marketing_data)
+
+```
+## 4. Simpan Hasil Prediksi
+```{r}
+# Menyimpan hasil ke file CSV
+write.csv(marketing_data, "PrediksiCalonPelanggan.csv", row.names = FALSE)
+
+```
+
+
+
+# R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents [@deCarvalho2012]. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# Referensi
+
