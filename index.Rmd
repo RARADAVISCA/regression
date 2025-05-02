@@ -21,8 +21,8 @@ text-align: justify}
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-# A. Analisis Konsumsi Heating Oil
-## 1. Membuat Correlation Matrix
+# 1. Analisis Konsumsi Heating Oil
+## 1.2 Membuat Correlation Matrix
 ```{r}
 # Load library
 library(tidyverse)
@@ -46,7 +46,7 @@ corrplot(cor_matrix, method = "color", type = "upper", tl.col = "black", tl.srt 
 
 ```
 
-## 2. Interpretasi Correlation Matrix
+## 1.3 Interpretasi Correlation Matrix
 Dari hasil di atas, kita bisa mengamati beberapa hal:
 
 - Variabel dengan korelasi positif kuat terhadap Heating_Oil: (misalnya) Home_Size dan Num_Occupants.
@@ -59,7 +59,7 @@ Interpretasi:
 
 - Semakin tinggi suhu dan kualitas insulasi, kebutuhan heating oil cenderung menurun.
 
-## 3. Scatter Plot Heating_Oil vs Avg_Age
+## 1.4 Scatter Plot Heating_Oil vs Avg_Age
 ```{r}
 ggplot(data, aes(x = Heating_Oil, y = Avg_Age, color = Heating_Oil)) +
   geom_point(size = 3) +
@@ -71,7 +71,7 @@ ggplot(data, aes(x = Heating_Oil, y = Avg_Age, color = Heating_Oil)) +
 ```
 Plot menunjukkan apakah rumah dengan penghuni lebih tua cenderung menggunakan lebih banyak atau lebih sedikit minyak pemanas. Misalnya, jika ada pola naik, maka usia berpengaruh positif terhadap konsumsi.
 
-## 4. Scatter Plot Temperature vs Insulation
+## 1.5 Scatter Plot Temperature vs Insulation
 ```{r}
 ggplot(data, aes(x = Temperature, y = Insulation, color = Heating_Oil)) +
   geom_point(size = 3) +
@@ -81,10 +81,9 @@ ggplot(data, aes(x = Temperature, y = Insulation, color = Heating_Oil)) +
        y = "Skor Insulasi Rumah")
 
 ```
-Interpretasi:
 Scatter plot ini membantu melihat apakah rumah dengan suhu rendah dan insulasi buruk mengonsumsi lebih banyak minyak pemanas.
 
-## 5. Rekomendasi untuk Sarah
+## 1.6 Rekomendasi untuk Sarah
 Berdasarkan hasil analisis:
 
 - Targetkan pemasaran ke rumah berukuran besar dan berpenghuni banyak.
@@ -95,50 +94,50 @@ Berdasarkan hasil analisis:
 
 Dengan strategi ini, Sarah dapat mengalokasikan anggaran pemasaran secara lebih efisien dan efektif.
 
-# B. Model Prediksi Heating Oil (Sarah)
-## 1. Membaca Dataset HeatingOil.csv
+# 2. Model Prediksi Heating Oil (Sarah)
+## 2.1 Membaca Dataset HeatingOil.csv
 ```{r}
 # Membaca data
 data <- read.csv("HeatingOil.csv")
 head(data)
 
 ```
-## 2. Membuat Model Regresi
+## 2.2 Membuat Model Regresi
 ```{r}
 # Membuat model regresi linear
 model <- lm(Heating_Oil ~ Insulation + Temperature + Num_Occupants + Avg_Age + Home_Size, data = data)
 summary(model)
 
 ```
-## 3. Menyimpan Model
+## 2.3 Menyimpan Model
 ```{r}
 # Menyimpan model sebagai file RDS
 saveRDS(model, "model_heating_oil.rds")
 
 ```
 
-# C. Prediksi Calon Pelanggan Heating Oil (Marketer)
-## 1.  Membaca Model dari Sarah
+# 3. Prediksi Calon Pelanggan Heating Oil (Marketer)
+## 3.1  Membaca Model dari Sarah
 ```{r}
 # Membaca model yang sudah dibuat dan disimpan oleh Sarah
 model <- readRDS("model_heating_oil.rds")
 
 ```
-## 2. Membaca Data Calon Pelanggan
+## 3.2 Membaca Data Calon Pelanggan
 ```{r}
 # Membaca dataset calon pelanggan
 marketing_data <- read.csv("HeatingOil-Marketing.csv")
 head(marketing_data)
 
 ```
-## 3. Memprediksi Kebutuhan Minyak
+## 3.3 Memprediksi Kebutuhan Minyak
 ```{r}
 # Prediksi konsumsi minyak menggunakan model
 marketing_data$Predicted_Heating_Oil <- predict(model, newdata = marketing_data)
 head(marketing_data)
 
 ```
-## 4. Simpan Hasil Prediksi
+## 3.4 Simpan Hasil Prediksi
 ```{r}
 # Menyimpan hasil ke file CSV
 write.csv(marketing_data, "PrediksiCalonPelanggan.csv", row.names = FALSE)
