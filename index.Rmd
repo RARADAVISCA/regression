@@ -11,6 +11,7 @@ output:
     highlight: tango
 bibliography: references.bib
 ---
+- Rara Dwi Davisca - Rekayasa Perangkat Lunak - Institut Teknologi Statistika dan Bisnis Muhammadiyah `UTS Regression Model`
 
 ```{=html}
 <style>
@@ -44,8 +45,9 @@ cor_data <- data %>%
   select(Heating_Oil, Insulation, Temperature, Num_Occupants, Avg_Age, Home_Size)
 
 corr_matrix <- cor(cor_data)
-corrplot(corr_matrix, method = "color", type = "upper", addCoef.col = "black", tl.col = "black")
+corrplot(corr_matrix, method = "color", addCoef.col = "black", tl.col = "black", tl.cex = 0.6)
 ```
+
 
 ### 1.3 Interpretasi Correlation Matrix
 - Korelasi negatif antara **Temperature** dan **Heating_Oil**: makin hangat cuaca, makin sedikit konsumsi minyak.
