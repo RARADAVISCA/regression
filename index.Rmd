@@ -143,13 +143,5 @@ hasil <- cbind(data_marketing, Prediksi_Heating_Oil = prediksi)
 print(head(hasil))  # Menampilkan beberapa baris pertama dari hasil
 print(names(hasil))  # Menampilkan nama-nama kolom
 
-# Visualisasi menggunakan plot()
-plot(hasil$Temperature, hasil$Prediksi_Heating_Oil,
-     main = "Prediksi Heating Oil Berdasarkan Suhu",
-     xlab = "Suhu (Temperature)",
-     ylab = "Prediksi Heating Oil",
-     pch = 19, col = "blue")  # pch untuk bentuk titik, col untuk warna
-
-
 ```
 
