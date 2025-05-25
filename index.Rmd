@@ -26,13 +26,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Membuat Correlation Matrix
 ```{r}
 suppressPackageStartupMessages({
-  library(ggplot2)
-  library(corrplot)
-  library(readr)
-  library(dplyr)
+ library(ggplot2)                     # Untuk membuat grafik visualisasi
+  library(corrplot)                   # Untuk membuat heatmap korelasi
+  library(readr)                      # Untuk membaca file CSV dengan read_csv()
+  library(dplyr)                      # Untuk manipulasi data (seperti select, filter, dll.)
 })
 
-data <- read_csv("HeatingOil.csv")
+data <- read_csv("HeatingOil.csv") # Mengimpor dataset HeatingOil.csv ke dalam variabel 'data'
 
 cor_matrix <- cor(data)
 print(cor_matrix)
@@ -42,7 +42,10 @@ print(cor_matrix)
 cor_data <- data %>%
   select(Heating_Oil, Insulation, Temperature, Num_Occupants, Avg_Age, Home_Size)
 
-corr_matrix <- cor(cor_data)
+# Menghitung matriks korelasi dari data yang telah diseleksi
+corr_matrix <- cor(cor_data) # Fungsi cor() menghitung korelasi antar kolom numerik
+
+# Membuat heatmap korelasi dengan visualisasi warna
 corrplot(corr_matrix, method = "color", addCoef.col = "black", tl.col = "black", tl.cex=0.6)
 
 ```
@@ -65,11 +68,27 @@ Sumbu X (horizontal): Menunjukkan nilai Heating Oil (jumlah konsumsi).
 Sumbu Y (vertikal): Menunjukkan nilai Avg Age (usia rata-rata penghuni rumah).
 Warna titik: Mewakili intensitas konsumsi Heating_Oil (semakin merah, semakin tinggi).
 ```{r}
-ggplot(data, aes(x = Heating_Oil, y = Avg_Age, color = Heating_Oil)) +
+ggplot(data, aes(x = Heating_Oil, y = Avg_Age, color = Heating_Oil)) + 
+  # Membuat objek grafik dengan data, menentukan sumbu X: Heating_Oil,
+  # sumbu Y: Avg_Age, dan warna titik ditentukan oleh nilai Heating_Oil
+
   geom_point() +
+  # Menambahkan layer berupa titik-titik (scatter plot)
+
   scale_color_gradient(low = "blue", high = "red") +
+  # Memberi gradasi warna dari biru (nilai rendah) ke merah (nilai tinggi)
+  # untuk menunjukkan tingkat konsumsi Heating_Oil
+
   theme_minimal() +
-  labs(title = "Heating Oil vs Avg Age", x = "Heating Oil", y = "Avg Age")
+  # Menggunakan tema minimalis agar grafik tampak bersih dan profesional
+
+  labs(
+    title = "Heating Oil vs Avg Age", 
+    x = "Heating Oil", 
+    y = "Avg Age"
+  )
+  # Memberi judul grafik dan label sumbu X dan Y
+
 ```
 - Scatter plot di atas menunjukkan hubungan antara usia rata-rata penghuni rumah (Avg_Age) dan jumlah penggunaan minyak pemanas (Heating_Oil). Warna titik menunjukkan banyaknya konsumsi—semakin merah, semakin tinggi.
 - Dari grafik, terlihat bahwa rumah dengan penghuni yang lebih tua cenderung menggunakan lebih banyak minyak pemanas. Ini menunjukkan bahwa usia bisa jadi faktor penting dalam kebiasaan penggunaan energi.
@@ -78,14 +97,26 @@ ggplot(data, aes(x = Heating_Oil, y = Avg_Age, color = Heating_Oil)) +
 ## Langkah 4
 ## Scatter Plot Temperature vs Insulation
 ```{r}
-ggplot(data, aes(x = Temperature, y = Insulation, color = Heating_Oil)) +
+ggplot(data, aes(x = Temperature, y = Insulation, color = Heating_Oil)) + 
+  # Membuat plot dengan sumbu X: Temperature (suhu lingkungan)
+  # dan sumbu Y: Insulation (skor kepadatan isolasi rumah)
+  # Warna titik menunjukkan nilai Heating_Oil (banyaknya minyak pemanas)
+
   geom_point(size = 4) +
+  # Menambahkan titik pada plot (scatter plot), ukuran titik diperbesar agar lebih terlihat
+
   scale_color_gradient(low = "blue", high = "yellow") +
-  labs(title = "Scatter Plot antara Temperature dan Insulation",
-       x = "Rata-rata Suhu Lingkungan (Fahrenheit)",
-       y = "Skor Kepadatan Insulasi Rumah",
+  # Memberikan gradasi warna dari biru (Heating_Oil rendah) ke kuning (Heating_Oil tinggi)
+
+  labs(title = "Scatter Plot antara Temperature dan Insulation", 
+       x = "Rata-rata Suhu Lingkungan (Fahrenheit)", 
+       y = "Skor Kepadatan Insulasi Rumah", 
        color = "Heating Oil") +
+  # Menambahkan judul grafik, label sumbu X dan Y, serta label untuk legenda warna
+
   theme_minimal()
+  # Menggunakan tema minimal agar grafik tampak bersih dan profesional
+
 
 ```
 Scatter plot tersebut menggambarkan hubungan tiga variabel: rata-rata suhu lingkungan (dalam Fahrenheit) pada sumbu X, skor kepadatan insulasi rumah pada sumbu Y, dan jumlah penggunaan Heating Oil yang direpresentasikan melalui gradasi warna (ungu ke kuning). Warna pada titik-titik menggambarkan tingkat konsumsi Heating Oil, di mana warna ungu dan biru menunjukkan konsumsi rendah, sedangkan warna kuning menunjukkan konsumsi tinggi. Dari pola yang terlihat, dapat disimpulkan bahwa rumah-rumah yang berada di lingkungan dengan suhu lebih rendah (sekitar 40–50°F) dan memiliki insulasi yang rendah (skor 2–4) cenderung menggunakan Heating Oil dalam jumlah yang lebih besar (ditandai dengan warna kuning mencolok). Sebaliknya, rumah dengan insulasi tinggi (skor 8–10) dan berada di lingkungan bersuhu hangat (di atas 70°F) cenderung menggunakan lebih sedikit Heating Oil (berwarna ungu).
