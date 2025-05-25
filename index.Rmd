@@ -102,7 +102,7 @@ data <- read.csv("HeatingOil.csv")
 head(data)
 
 # Membuat Model Regresi
-model <- lm(Heating_Oil ~ Temperature + Insulation + Home_Size + Avg_Age, data = data)
+model <- lm(Heating_Oil ~ Temperature + Insulation + Home_Size + Avg_Age +  Num_Occupants, data = data)
 summary(model)
 
 # Menyimpan Model
