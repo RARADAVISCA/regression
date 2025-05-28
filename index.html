@@ -7,7 +7,7 @@
 
         <meta name="author" content="Rara Dwi Davisca-Rekayasa Perangkat Lunak-Institut Teknologi Statistika dan Bisnis Muhammadiyah" />
     
-        <meta name="date" content="2025-05-25" />
+        <meta name="date" content="2025-05-28" />
     
     <title>UTS Regression Models</title>
 
@@ -1862,7 +1862,7 @@ margin-left: 0 !important;
                                 <li><span><i class="glyphicon glyphicon-user"></i> Rara
 Dwi Davisca-Rekayasa Perangkat Lunak-Institut Teknologi Statistika dan
 Bisnis Muhammadiyah</span></li>
-                                         <li><span><i class="glyphicon glyphicon-calendar"></i> 2025-05-25</span></li>
+                                         <li><span><i class="glyphicon glyphicon-calendar"></i> 2025-05-28</span></li>
                   </ul>     
       </div>
       <div class="book-body fixed">
@@ -1895,10 +1895,10 @@ text-align: justify}
 <div id="membuat-correlation-matrix" class="section level2">
 <h2>Membuat Correlation Matrix</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>({</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a> <span class="fu">library</span>(ggplot2)                     <span class="co"># Untuk membuat grafik visualisasi</span></span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">library</span>(corrplot)                   <span class="co"># Untuk membuat heatmap korelasi</span></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="fu">library</span>(readr)                      <span class="co"># Untuk membaca file CSV dengan read_csv()</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="fu">library</span>(dplyr)                      <span class="co"># Untuk manipulasi data (seperti select, filter, dll.)</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a> <span class="fu">library</span>(ggplot2)                     </span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">library</span>(corrplot)                   </span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="fu">library</span>(readr)                      </span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="fu">library</span>(dplyr)              </span>
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>})</span>
 <span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a></span>
 <span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;HeatingOil.csv&quot;</span>) <span class="co"># Mengimpor dataset HeatingOil.csv ke dalam variabel &#39;data&#39;</span></span></code></pre></div>
@@ -1909,8 +1909,8 @@ text-align: justify}
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(data)</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">print</span>(cor_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(data) </span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">print</span>(cor_matrix) <span class="co">#menghitung matriks korelasi dari seluruh kolom numerik dalam data bernama data.</span></span></code></pre></div>
 <pre><code>##                Insulation Temperature Heating_Oil Num_Occupants     Avg_Age
 ## Insulation     1.00000000 -0.79369606  0.73609688   -0.01256684  0.64298171
 ## Temperature   -0.79369606  1.00000000 -0.77365974    0.01251864 -0.67257949

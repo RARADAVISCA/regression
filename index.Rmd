@@ -26,16 +26,16 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Membuat Correlation Matrix
 ```{r}
 suppressPackageStartupMessages({
- library(ggplot2)                     # Untuk membuat grafik visualisasi
-  library(corrplot)                   # Untuk membuat heatmap korelasi
-  library(readr)                      # Untuk membaca file CSV dengan read_csv()
-  library(dplyr)                      # Untuk manipulasi data (seperti select, filter, dll.)
+ library(ggplot2)                     
+  library(corrplot)                   
+  library(readr)                      
+  library(dplyr)              
 })
 
 data <- read_csv("HeatingOil.csv") # Mengimpor dataset HeatingOil.csv ke dalam variabel 'data'
 
-cor_matrix <- cor(data)
-print(cor_matrix)
+cor_matrix <- cor(data) 
+print(cor_matrix) #menghitung matriks korelasi dari seluruh kolom numerik dalam data bernama data.
 ```
 
 ```{r}
